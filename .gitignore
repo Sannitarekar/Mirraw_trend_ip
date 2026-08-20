@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Environment & secrets
+.env
+*.env.local
+
+# Local demo data (embedded DB, local object storage, downloads)
+.data/
+data/
+downloads/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Playwright
+/test-results/
+/playwright-report/
+blob-report/

@@ -1,0 +1,74 @@
+{
+  "name": "TIP - Workflow 3: Scoring, Dedup & Promotion",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "30 3 * * *"
+            }
+          ]
+        }
+      },
+      "id": "7d5e2b1a-0003-4a03-9c03-000000000001",
+      "name": "Daily 3:30 AM IST trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 300]
+    },
+    {
+      "parameters": {
+        "command": "node /opt/mirraw/tip/pipeline-runner/index.ts score"
+      },
+      "id": "7d5e2b1a-0003-4a03-9c03-000000000002",
+      "name": "Score, deduplicate (pHash) & promote top 200",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1.2,
+      "position": [280, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#product-ai",
+        "text": "TIP daily summary: scored / discarded / deduplicated / promoted counts are in the job log."
+      },
+      "id": "7d5e2b1a-0003-4a03-9c03-000000000003",
+      "name": "Send daily summary to #product-ai",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1.2,
+      "position": [560, 300]
+    }
+  ],
+  "connections": {
+    "Daily 3:30 AM IST trigger": {
+      "main": [
+        [
+          {
+            "node": "Score, deduplicate (pHash) & promote top 200",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score, deduplicate (pHash) & promote top 200": {
+      "main": [
+        [
+          {
+            "node": "Send daily summary to #product-ai",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Kolkata"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

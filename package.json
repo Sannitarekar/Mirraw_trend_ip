@@ -1,0 +1,38 @@
+{
+  "name": "trend-intelligence-platform",
+  "version": "1.0.0",
+  "description": "Mirraw Trend Intelligence Platform (TIP) - automated fashion trend discovery pipeline",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "set NODE_ENV=test&& node --test --test-concurrency=4 \"tests/**/*.test.ts\"",
+    "test:unit": "set NODE_ENV=test&& node --test --test-concurrency=4 \"tests/unit/**/*.test.ts\"",
+    "test:integration": "set NODE_ENV=test&& node --test --test-concurrency=4 \"tests/integration/**/*.test.ts\"",
+    "api": "node scripts/serve.ts",
+    "collect": "node src/pipeline-runner/index.ts collect",
+    "analyze": "node src/pipeline-runner/index.ts analyze",
+    "score": "node src/pipeline-runner/index.ts score",
+    "pipeline": "node src/pipeline-runner/index.ts all",
+    "demo": "node scripts/demo.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1113.0",
+    "@electric-sql/pglite": "^0.5.5",
+    "@fastify/cors": "^11.3.0",
+    "dotenv": "^17.4.2",
+    "fastify": "^5.12.1",
+    "pg": "^8.23.0",
+    "playwright": "^1.62.1",
+    "sharp": "^0.35.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "@types/pg": "^8.23.1",
+    "typescript": "^7.0.2"
+  }
+}

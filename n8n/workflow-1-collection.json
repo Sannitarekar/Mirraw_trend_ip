@@ -1,0 +1,74 @@
+{
+  "name": "TIP - Workflow 1: Collection (daily 2 AM IST)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 2 * * *"
+            }
+          ]
+        }
+      },
+      "id": "7d5e2b1a-0001-4a01-9c01-000000000001",
+      "name": "Daily 2 AM IST trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 300]
+    },
+    {
+      "parameters": {
+        "command": "node /opt/mirraw/tip/pipeline-runner/index.ts collect"
+      },
+      "id": "7d5e2b1a-0001-4a01-9c01-000000000002",
+      "name": "Run collectors (Pinterest + scrapers + Instagram CSV)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1.2,
+      "position": [280, 300]
+    },
+    {
+      "parameters": {
+        "channel": "#product-ai",
+        "text": "TIP Collection finished. See logs for saved counts."
+      },
+      "id": "7d5e2b1a-0001-4a01-9c01-000000000003",
+      "name": "Notify Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1.2,
+      "position": [560, 300]
+    }
+  ],
+  "connections": {
+    "Daily 2 AM IST trigger": {
+      "main": [
+        [
+          {
+            "node": "Run collectors (Pinterest + scrapers + Instagram CSV)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run collectors (Pinterest + scrapers + Instagram CSV)": {
+      "main": [
+        [
+          {
+            "node": "Notify Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Asia/Kolkata"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
